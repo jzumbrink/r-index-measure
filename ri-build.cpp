@@ -7,6 +7,7 @@
 #include "internal/r_index.hpp"
 #include "utils.hpp"
 #include "internal/r_index.hpp"
+#include "malloc_count.h"
 
 using namespace ri;
 using namespace std;
@@ -150,6 +151,15 @@ int main(int argc, char** argv){
 	ulint total = duration_cast<duration<double, std::ratio<1>>>(t2 - t1).count();
 	cout << "Build time : " << get_time(total) << endl;
 
+	ulint malloc_space_peak = malloc_count_peak();
+
+	cout << "RESULT"
+		<< " algo=r_index_build"
+		<< " time_ms=" << duration_cast<chrono::milliseconds>(t2 -t1).count()
+		<< " n=" << input.length()
+		<< " file=" << input_file
+		<< " malloc_peak=" << malloc_space_peak
+		<< endl << flush;
 
 	out.close();
 

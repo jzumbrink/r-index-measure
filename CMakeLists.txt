@@ -12,6 +12,7 @@ project (s-rlbwt)
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/internal)
+include_directories(${PROJECT_SOURCE_DIR}/external/malloc_count)
 include_directories(~/include) #SDSL headers are here
 
 LINK_DIRECTORIES(~/lib) #SDSL lib are here
@@ -24,7 +25,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 -ggdb -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-g -ggdb -Ofast -fstrict-aliasing -DNDEBUG -march=native")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -ggdb -Ofast -fstrict-aliasing -march=native")
 
-add_executable(ri-build ri-build.cpp)
+add_executable(ri-build ri-build.cpp external/malloc_count/malloc_count.c)
 TARGET_LINK_LIBRARIES(ri-build sdsl)
 TARGET_LINK_LIBRARIES(ri-build divsufsort)
 TARGET_LINK_LIBRARIES(ri-build divsufsort64)
