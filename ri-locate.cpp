@@ -70,7 +70,7 @@ void parse_args(char** argv, int argc, int &ptr){
 
 
 template<class idx_t>
-void locate(std::ifstream& in, string patterns){
+void locate(std::ifstream& in, string patterns, string in_file){
 
     using std::chrono::high_resolution_clock;
     using std::chrono::duration_cast;
@@ -125,12 +125,6 @@ void locate(std::ifstream& in, string patterns){
 	//extract patterns from file and search them in the index
 	for(ulint i=0;i<n;++i){
 
-		uint perc = (100*i)/n;
-		if(perc>last_perc){
-			cout << perc << "% done ..." << endl;
-			last_perc=perc;
-		}
-
 		string p = string();
 
 		for(ulint j=0;j<m;++j){
@@ -138,8 +132,6 @@ void locate(std::ifstream& in, string patterns){
 			ifs.get(c);
 			p+=c;
 		}
-
-		//cout << "locating " << idx.occ(p) << " occurrences of "<< p << " ... " << flush;
 
 		auto OCC = idx.locate_all(p);	//occurrences
 
@@ -213,6 +205,18 @@ void locate(std::ifstream& in, string patterns){
 	cout << "Search time : " << (double)search/n << " milliseconds/pattern (total: " << n << " patterns)" << endl;
 	cout << "Search time : " << (double)search/occ_tot << " milliseconds/occurrence (total: " << occ_tot << " occurrences)" << endl;
 
+	std::ofstream void_out("/dev/null");
+	ulint idx_size = idx.serialize(void_out);
+
+	cout << "RESULT"
+		<< " algo=r_index_count"
+		<< " time_ms=" << search
+		<< " idx_size=" << idx_size
+		<< " n=" << idx.text_size()
+		<< " m=" << m
+		<< " pattern_count=" << n
+		<< " file=" << in_file
+		<< endl << flush;
 }
 
 int main(int argc, char** argv){
@@ -243,7 +247,7 @@ int main(int argc, char** argv){
 
 	}else{
 
-		locate<r_index<> >(in, patt_file);
+		locate<r_index<> >(in, patt_file, idx_file);
 
 	}
 
