@@ -209,7 +209,7 @@ void locate(std::ifstream& in, string patterns, string in_file){
 	ulint idx_size = idx.serialize(void_out);
 
 	cout << "RESULT"
-		<< " algo=r_index_count"
+		<< " algo=r_index_locate"
 		<< " time_ms=" << search
 		<< " idx_size=" << idx_size
 		<< " n=" << idx.text_size()
